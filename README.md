@@ -1,6 +1,6 @@
 
 
-Readme · MD
+
 Signal — AI-Powered Lead Capture & CRM Automation
 An end-to-end automation system that captures leads from a live landing page, validates and stores them in a CRM, qualifies them automatically, and triggers instant email responses — with zero manual work.
 
