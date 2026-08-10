@@ -102,6 +102,5 @@ Host index.html anywhere (Netlify, Vercel, GitHub Pages)
 About this project
 This was built during Week 4 of an AI Automation internship, then intentionally taken beyond the original assignment scope — real landing page, live public deployment, and lead qualification logic — to serve as a portfolio piece for freelance AI automation work.
 
-Built by Merab Butt — learning Agentic AI, LLM Engineering, and AI Automation.
-
+Built by Merab Butt 
 
