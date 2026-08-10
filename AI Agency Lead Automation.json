@@ -1,0 +1,539 @@
+{
+  "name": "AI Agency Lead Automation",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "agency-lead",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        32,
+        0
+      ],
+      "id": "e157005b-83f3-4fb8-8d9c-1e088cfbefc6",
+      "name": "Lead Form Input",
+      "webhookId": "3a012f8d-a7bc-43b1-b40c-7eca510f7d56"
+    },
+    {
+      "parameters": {
+        "fromEmail": "=memyrb888@gmail.com",
+        "toEmail": "={{ $('Lead Form Input').item.json.body.email }}",
+        "subject": "Thanks for reaching out!",
+        "emailFormat": "text",
+        "text": "Hi,\n\nThanks for reaching out about ! \n\nI'll review your automation needs and get back to you within 24 hours to discuss how we can streamline your workflow.\n\nBest,\nMerab Butt",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        848,
+        0
+      ],
+      "id": "513228fc-d1d4-46ef-9a98-3706736233f1",
+      "name": "Send an Email",
+      "webhookId": "bffa6ad9-f88b-481a-99ef-3d970e8e5570",
+      "credentials": {
+        "smtp": {
+          "id": "xuniTdMNLblRzueC",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "app0hNb0cVujrmKPG",
+          "mode": "list",
+          "cachedResultName": "AI Agency Leads",
+          "cachedResultUrl": "https://airtable.com/app0hNb0cVujrmKPG"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblcHj0RhOTM66SMA",
+          "mode": "list",
+          "cachedResultName": "leads",
+          "cachedResultUrl": "https://airtable.com/app0hNb0cVujrmKPG/tblcHj0RhOTM66SMA"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $json.body.name }}",
+            "Email": "={{ $json.body.email }}",
+            "Phone": "={{ $json.body.phone }}",
+            "Automation Need": "={{ $json.body.automation_need }}",
+            "Timestamp": "={{ $now }}",
+            "Status": "New Lead"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Phone",
+              "displayName": "Phone",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Automation Need",
+              "displayName": "Automation Need",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Timestamp",
+              "displayName": "Timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "New Lead",
+                  "value": "New Lead"
+                },
+                {
+                  "name": "Contacted",
+                  "value": "Contacted"
+                },
+                {
+                  "name": "Converted",
+                  "value": "Converted"
+                },
+                {
+                  "name": "",
+                  "value": ""
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        336,
+        0
+      ],
+      "id": "b32b6ffc-b049-4726-963c-5046332413c3",
+      "name": "Create a record",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "SHCtNP6DL0w1h6o8",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "memyrb888@gmail.com",
+        "toEmail": "memyrb888@gmail.com",
+        "subject": "New Alert Received",
+        "emailFormat": "text",
+        "text": "=New lead: {{ $('Lead Form Input').item.json.body.name }}\n   Email: {{ $('Lead Form Input').item.json.body.email }}\n   Phone: {{ $('Lead Form Input').item.json.body.phone }}\n   Automation Need: {{ $('Lead Form Input').item.json.body.automation_need }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        512,
+        192
+      ],
+      "id": "843ee167-8f5e-46ca-9d23-92dd4b870bc7",
+      "name": "Notify Admin",
+      "webhookId": "a1c34df6-1c2a-47c1-a408-f6281267ec5c",
+      "credentials": {
+        "smtp": {
+          "id": "xuniTdMNLblRzueC",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "8c7f77d1-1f50-4d91-879c-f99e17d299c9",
+              "leftValue": "={{ $json.body.email }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "872618e0-e4a0-4d54-a277-3ee387a0dd95",
+              "leftValue": "={{ $json.body.email }}",
+              "rightValue": "@",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        176,
+        0
+      ],
+      "id": "33255cab-ba69-447b-84b0-bae57db2a8e5",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"status\": \"error\",\n  \"message\": \"Invalid or missing email/name. Please check your input and try again.\"\n}",
+        "options": {
+          "responseCode": 400
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        336,
+        176
+      ],
+      "id": "41fe385b-fe13-4e45-92ab-c179306ee78a",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "eb136906-500c-47fd-9870-b18e2add9b13",
+              "name": "score",
+              "value": "={{ $('Lead Form Input').item.json.body.automation_need.toLowerCase().includes('urgent') || $('Lead Form Input').item.json.body.automation_need.toLowerCase().includes('asap') || $('Lead Form Input').item.json.body.automation_need.toLowerCase().includes('ready') ? 'Hot Lead' : 'New Lead' }}",
+              "type": "string"
+            },
+            {
+              "id": "c68f5dd7-283f-4477-bc84-9e82c415a182",
+              "name": "",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        512,
+        0
+      ],
+      "id": "23cba774-828b-4ae7-bad5-a2d81eef43f2",
+      "name": "Calculate Lead Score"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "app0hNb0cVujrmKPG",
+          "mode": "list",
+          "cachedResultName": "AI Agency Leads",
+          "cachedResultUrl": "https://airtable.com/app0hNb0cVujrmKPG"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblcHj0RhOTM66SMA",
+          "mode": "list",
+          "cachedResultName": "leads",
+          "cachedResultUrl": "https://airtable.com/app0hNb0cVujrmKPG/tblcHj0RhOTM66SMA"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('Create a record').item.json.id }}",
+            "Status": "={{ $json.score }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Phone",
+              "displayName": "Phone",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Automation Need",
+              "displayName": "Automation Need",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Timestamp",
+              "displayName": "Timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "New Lead",
+                  "value": "New Lead"
+                },
+                {
+                  "name": "Contacted",
+                  "value": "Contacted"
+                },
+                {
+                  "name": "Converted",
+                  "value": "Converted"
+                },
+                {
+                  "name": "",
+                  "value": ""
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        688,
+        0
+      ],
+      "id": "747b2aee-1ec4-48d8-b714-12d242e78af4",
+      "name": "Update record",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "SHCtNP6DL0w1h6o8",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Lead Form Input": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a record": {
+      "main": [
+        [
+          {
+            "node": "Notify Admin",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Calculate Lead Score",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send an Email": {
+      "main": [
+        []
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Create a record",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculate Lead Score": {
+      "main": [
+        [
+          {
+            "node": "Update record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update record": {
+      "main": [
+        [
+          {
+            "node": "Send an Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "519e2d04-559f-4892-a412-8dd9ce718bcf",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e2ec01e97bf4a33a670142cb59b111bfe302b5a1d0ef359b992cb91c39c4f914"
+  },
+  "nodeGroups": [],
+  "id": "g9CBlfUDdzT36Hp4",
+  "tags": []
+}
