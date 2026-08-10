@@ -1,0 +1,1568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Signal builds AI-powered automation systems that eliminate repetitive work, connect your tools, and help your business operate faster.">
+<title>Signal — AI Automation for Modern Businesses</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0b0d;
+  --bg-raised: #111318;
+  --bg-card: #14161c;
+  --line: rgba(255,255,255,0.08);
+  --line-strong: rgba(255,255,255,0.14);
+  --text: #f4f5f7;
+  --text-dim: #8b919c;
+  --text-muted: #5c6370;
+  --amber: #ffb648;
+  --amber-soft: rgba(255,182,72,0.12);
+  --amber-glow: rgba(255,182,72,0.35);
+  --purple: #8b7cf6;
+  --purple-soft: rgba(139,124,246,0.12);
+  --blue: #5b9cf6;
+  --green: #6fd68f;
+  --red: #ff6b6b;
+  --nav-h: 72px;
+  --container: 1200px;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--nav-h) + 24px); }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+body.menu-open { overflow: hidden; }
+.mono { font-family: 'IBM Plex Mono', monospace; }
+.container { max-width: var(--container); margin: 0 auto; padding: 0 clamp(20px, 5vw, 64px); }
+.section { padding: clamp(72px, 10vw, 120px) 0; position: relative; }
+.section-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.section-label::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--amber);
+}
+.section-title {
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  max-width: 640px;
+}
+.section-desc {
+  margin-top: 16px;
+  max-width: 560px;
+  color: var(--text-dim);
+  font-size: 17px;
+}
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+
+.bg-glow {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 60% 40% at 15% 10%, rgba(139,124,246,0.07), transparent 50%),
+    radial-gradient(ellipse 50% 35% at 85% 20%, rgba(255,182,72,0.06), transparent 50%),
+    radial-gradient(ellipse 40% 30% at 50% 80%, rgba(91,156,246,0.04), transparent 50%);
+}
+.spotlight {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background: radial-gradient(600px circle at var(--mx, 50%) var(--my, 30%), rgba(255,182,72,0.04), transparent 60%);
+}
+
+/* NAV */
+.navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--nav-h);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid transparent;
+  transition: background 0.35s, border-color 0.35s, backdrop-filter 0.35s;
+}
+.navbar.scrolled {
+  background: rgba(10,11,13,0.82);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-color: var(--line);
+}
+.nav-inner {
+  width: 100%;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 clamp(20px, 5vw, 64px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  color: var(--text);
+}
+.logo-dot {
+  width: 8px; height: 8px;
+  background: var(--amber);
+  border-radius: 50%;
+  box-shadow: 0 0 12px var(--amber-glow);
+}
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  list-style: none;
+}
+.nav-links a {
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+.nav-links a:hover, .nav-links a:focus-visible { color: var(--text); }
+.nav-cta {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 20px;
+  background: var(--amber);
+  color: #1a1305;
+  font-weight: 600;
+  font-size: 14px;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  white-space: nowrap;
+}
+.nav-cta:hover { transform: translateY(-1px); box-shadow: 0 8px 24px var(--amber-glow); }
+.menu-toggle {
+  display: none;
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  width: 44px; height: 44px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 5px;
+  padding: 0;
+}
+.menu-toggle span {
+  display: block;
+  width: 18px; height: 2px;
+  background: var(--text);
+  transition: transform 0.3s, opacity 0.3s;
+}
+.menu-toggle.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.menu-toggle.active span:nth-child(2) { opacity: 0; }
+.menu-toggle.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+.mobile-menu {
+  display: none;
+  position: fixed;
+  inset: var(--nav-h) 0 0 0;
+  background: rgba(10,11,13,0.96);
+  backdrop-filter: blur(20px);
+  z-index: 999;
+  padding: 32px clamp(20px, 5vw, 64px);
+  flex-direction: column;
+  gap: 8px;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+  color: var(--text);
+  text-decoration: none;
+  font-size: 22px;
+  font-weight: 600;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+}
+.mobile-menu .nav-cta { margin-top: 16px; justify-content: center; width: 100%; }
+
+/* BUTTONS */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 28px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  text-decoration: none;
+  border: none;
+  transition: transform 0.2s, box-shadow 0.2s, background 0.2s, border-color 0.2s;
+}
+.btn-primary {
+  background: var(--amber);
+  color: #1a1305;
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 32px var(--amber-glow); }
+.btn-ghost {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--line-strong);
+}
+.btn-ghost:hover { border-color: var(--text-dim); background: rgba(255,255,255,0.03); }
+
+/* HERO */
+.hero {
+  min-height: 100vh;
+  padding-top: calc(var(--nav-h) + 48px);
+  padding-bottom: 48px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(40px, 6vw, 80px);
+  align-items: center;
+}
+.hero-trust {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin-bottom: 28px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+.hero-trust span { color: var(--text-dim); }
+.hero h1 {
+  font-size: clamp(40px, 5.5vw, 68px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.02;
+  margin-bottom: 24px;
+}
+.hero-highlight {
+  display: inline;
+  background: linear-gradient(90deg, var(--amber), #ffd68a, var(--amber));
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 4s linear infinite;
+}
+@keyframes shimmer {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+.hero-sub {
+  font-size: 18px;
+  color: var(--text-dim);
+  max-width: 480px;
+  margin-bottom: 36px;
+  line-height: 1.65;
+}
+.hero-actions { display: flex; flex-wrap: wrap; gap: 14px; }
+
+/* WORKFLOW VIZ */
+.workflow-viz {
+  position: relative;
+  background: rgba(17,19,24,0.6);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 32px 28px;
+  backdrop-filter: blur(8px);
+}
+.workflow-viz::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 13px;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(255,182,72,0.2), transparent 40%, rgba(139,124,246,0.15));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+.viz-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--line);
+}
+.viz-title { font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.1em; color: var(--text-dim); text-transform: uppercase; }
+.viz-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--green);
+}
+.viz-status::before {
+  content: '';
+  width: 6px; height: 6px;
+  background: var(--green);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--green);
+  animation: pulse 2s ease infinite;
+}
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+.viz-flow { display: flex; flex-direction: column; gap: 0; }
+.viz-node {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  position: relative;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.viz-node.active {
+  border-color: rgba(255,182,72,0.35);
+  box-shadow: 0 0 20px rgba(255,182,72,0.08);
+}
+.viz-node-icon {
+  width: 36px; height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--amber-soft);
+  border-radius: 6px;
+  flex-shrink: 0;
+  color: var(--amber);
+}
+.viz-node-icon.purple { background: var(--purple-soft); color: var(--purple); }
+.viz-node-icon.blue { background: rgba(91,156,246,0.12); color: var(--blue); }
+.viz-node-text { flex: 1; }
+.viz-node-text strong { display: block; font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+.viz-node-text span { font-size: 12px; color: var(--text-dim); }
+.viz-connector {
+  height: 32px;
+  width: 2px;
+  margin-left: 33px;
+  background: var(--line);
+  position: relative;
+  overflow: visible;
+}
+.viz-connector::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -2px;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--amber);
+  box-shadow: 0 0 10px var(--amber-glow);
+  animation: flowDown 2.5s ease-in-out infinite;
+}
+.viz-connector:nth-child(4)::after { animation-delay: 0.5s; }
+.viz-connector:nth-child(6)::after { animation-delay: 1s; }
+.viz-connector:nth-child(8)::after { animation-delay: 1.5s; }
+.viz-connector:nth-child(10)::after { animation-delay: 2s; }
+@keyframes flowDown {
+  0% { top: 0; opacity: 0; }
+  15% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { top: calc(100% - 6px); opacity: 0; }
+}
+
+/* TRUST STRIP */
+.trust-strip {
+  padding: 40px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  position: relative;
+  z-index: 2;
+  background: rgba(17,19,24,0.4);
+}
+.trust-label {
+  text-align: center;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+  text-transform: uppercase;
+}
+.trust-badges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+.trust-badge {
+  padding: 10px 18px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-dim);
+  background: rgba(255,255,255,0.02);
+  transition: border-color 0.25s, color 0.25s;
+}
+.trust-badge:hover { border-color: var(--line-strong); color: var(--text); }
+
+/* PROBLEM */
+.problem-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-top: 48px;
+}
+.problem-card {
+  padding: 28px 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  transition: transform 0.35s var(--ease), border-color 0.35s, box-shadow 0.35s;
+}
+.problem-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--line-strong);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.3);
+}
+.problem-icon {
+  width: 40px; height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  margin-bottom: 18px;
+  color: var(--amber);
+}
+.problem-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+.problem-card p { font-size: 14px; color: var(--text-dim); line-height: 1.55; }
+
+/* SERVICES */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 48px;
+}
+.service-card {
+  padding: 28px 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: transform 0.35s var(--ease), border-color 0.35s;
+  cursor: default;
+}
+.service-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255,182,72,0.25);
+}
+.service-icon {
+  width: 44px; height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--amber-soft);
+  border-radius: 8px;
+  color: var(--amber);
+}
+.service-card h3 { font-size: 17px; font-weight: 600; }
+.service-card p { font-size: 14px; color: var(--text-dim); flex: 1; line-height: 1.55; }
+.service-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--amber);
+  transition: gap 0.25s;
+}
+.service-card:hover .service-link { gap: 10px; }
+
+/* PROCESS */
+.process-section { background: rgba(17,19,24,0.5); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.process-timeline {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-top: 56px;
+  position: relative;
+}
+.process-timeline::before {
+  content: '';
+  position: absolute;
+  top: 28px;
+  left: 12%;
+  right: 12%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--line-strong), var(--amber), var(--line-strong), transparent);
+}
+.process-step { text-align: center; position: relative; }
+.process-num {
+  width: 56px; height: 56px;
+  margin: 0 auto 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--amber);
+  position: relative;
+  z-index: 1;
+  transition: box-shadow 0.35s, border-color 0.35s;
+}
+.process-step:hover .process-num {
+  border-color: var(--amber);
+  box-shadow: 0 0 24px var(--amber-glow);
+}
+.process-step h3 { font-size: 17px; font-weight: 600; margin-bottom: 8px; }
+.process-step p { font-size: 14px; color: var(--text-dim); max-width: 220px; margin: 0 auto; line-height: 1.5; }
+
+/* EXAMPLE WORKFLOW */
+.example-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 48px;
+  align-items: start;
+  margin-top: 48px;
+}
+.example-steps { display: flex; flex-direction: column; gap: 8px; }
+.example-step {
+  padding: 18px 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 0.25s, background 0.25s;
+  text-align: left;
+  font-family: inherit;
+  color: inherit;
+  width: 100%;
+}
+.example-step:hover, .example-step.active {
+  border-color: rgba(255,182,72,0.35);
+  background: rgba(255,182,72,0.04);
+}
+.example-step-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--amber);
+  margin-bottom: 4px;
+}
+.example-step-title { font-size: 15px; font-weight: 600; }
+.example-detail {
+  padding: 32px;
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  min-height: 280px;
+  position: sticky;
+  top: calc(var(--nav-h) + 24px);
+}
+.example-detail-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.example-detail h3 { font-size: 22px; font-weight: 700; margin-bottom: 12px; }
+.example-detail p { color: var(--text-dim); font-size: 15px; line-height: 1.65; margin-bottom: 24px; }
+.example-chain {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+.example-chain span.highlight { color: var(--amber); }
+
+/* BENEFITS */
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-top: 48px;
+}
+.benefit-card {
+  padding: 32px 24px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+  text-align: center;
+  transition: border-color 0.3s;
+}
+.benefit-card:hover { border-color: var(--line-strong); }
+.benefit-card h3 {
+  font-size: clamp(22px, 3vw, 28px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+  background: linear-gradient(180deg, var(--text), var(--text-dim));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.benefit-card p { font-size: 14px; color: var(--text-dim); }
+
+/* CONTACT */
+.contact-section { position: relative; z-index: 2; }
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: start;
+  margin-top: 48px;
+}
+.contact-copy h3 { font-size: 24px; font-weight: 700; margin-bottom: 16px; letter-spacing: -0.02em; }
+.contact-points { list-style: none; display: flex; flex-direction: column; gap: 16px; margin-top: 32px; }
+.contact-points li {
+  display: flex;
+  gap: 14px;
+  font-size: 15px;
+  color: var(--text-dim);
+}
+.contact-points li::before {
+  content: '→';
+  color: var(--amber);
+  font-family: 'IBM Plex Mono', monospace;
+  flex-shrink: 0;
+}
+.form-card {
+  background: rgba(17,19,24,0.8);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 36px;
+  backdrop-filter: blur(12px);
+}
+.form-card h2 { font-size: 24px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.02em; }
+.form-sub { color: var(--text-dim); font-size: 15px; margin-bottom: 28px; }
+.field { margin-bottom: 18px; }
+.field label {
+  display: block;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.field input, .field select, .field textarea {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 13px 14px;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.field input:focus, .field select:focus, .field textarea:focus {
+  border-color: var(--amber);
+  box-shadow: 0 0 0 3px var(--amber-soft);
+}
+.field input.invalid, .field select.invalid { border-color: var(--red); }
+.field-error { font-size: 12px; color: var(--red); margin-top: 6px; display: none; }
+.field-error.show { display: block; }
+.field select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238b919c' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+}
+.field textarea { resize: vertical; min-height: 88px; }
+.submit-btn {
+  width: 100%;
+  background: var(--amber);
+  color: #1a1305;
+  border: none;
+  border-radius: 6px;
+  padding: 15px;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: opacity 0.2s, transform 0.2s, box-shadow 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+.submit-btn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 8px 24px var(--amber-glow); }
+.submit-btn:active:not(:disabled) { transform: scale(0.98); }
+.submit-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+.submit-btn.loading { color: transparent; }
+.submit-btn.loading::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 20px; height: 20px;
+  border: 2px solid rgba(26,19,5,0.3);
+  border-top-color: #1a1305;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.form-note {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 14px;
+  text-align: center;
+}
+.status-msg {
+  display: none;
+  margin-top: 18px;
+  padding: 14px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: 'IBM Plex Mono', monospace;
+  align-items: center;
+  gap: 10px;
+}
+.status-msg.success {
+  display: flex;
+  background: rgba(111,214,143,0.1);
+  border: 1px solid var(--green);
+  color: var(--green);
+  animation: fadeIn 0.4s var(--ease);
+}
+.status-msg.error {
+  display: flex;
+  background: rgba(255,107,107,0.1);
+  border: 1px solid var(--red);
+  color: var(--red);
+}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.success-icon {
+  width: 22px; height: 22px;
+  border: 2px solid var(--green);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  animation: scaleIn 0.4s var(--ease);
+}
+@keyframes scaleIn { from { transform: scale(0); } to { transform: scale(1); } }
+
+/* FAQ */
+.faq-list { margin-top: 48px; max-width: 760px; }
+.faq-item { border-bottom: 1px solid var(--line); }
+.faq-question {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 22px 0;
+  background: none;
+  border: none;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.faq-question:hover { color: var(--amber); }
+.faq-icon {
+  width: 24px; height: 24px;
+  flex-shrink: 0;
+  position: relative;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+}
+.faq-icon::before, .faq-icon::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  background: var(--text-dim);
+  transition: transform 0.3s var(--ease);
+}
+.faq-icon::before { width: 10px; height: 1px; transform: translate(-50%, -50%); }
+.faq-icon::after { width: 1px; height: 10px; transform: translate(-50%, -50%); }
+.faq-item.open .faq-icon::after { transform: translate(-50%, -50%) rotate(90deg); opacity: 0; }
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s var(--ease), padding 0.4s var(--ease);
+}
+.faq-answer-inner {
+  padding: 0 0 22px;
+  color: var(--text-dim);
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+/* FINAL CTA */
+.final-cta {
+  text-align: center;
+  padding: clamp(80px, 12vw, 140px) 0;
+  position: relative;
+  z-index: 2;
+}
+.final-cta::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 50% 60% at 50% 50%, rgba(255,182,72,0.06), transparent 70%);
+  pointer-events: none;
+}
+.final-cta h2 {
+  font-size: clamp(32px, 5vw, 52px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin-bottom: 16px;
+  position: relative;
+}
+.final-cta p {
+  color: var(--text-dim);
+  font-size: 18px;
+  max-width: 520px;
+  margin: 0 auto 32px;
+  position: relative;
+}
+
+/* FOOTER */
+footer {
+  border-top: 1px solid var(--line);
+  padding: 48px 0 32px;
+  position: relative;
+  z-index: 2;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 48px;
+  margin-bottom: 40px;
+}
+.footer-brand p { color: var(--text-dim); font-size: 14px; margin-top: 12px; max-width: 280px; }
+.footer-links { display: flex; gap: 48px; }
+.footer-col h4 {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+.footer-col a {
+  display: block;
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 14px;
+  margin-bottom: 10px;
+  transition: color 0.2s;
+}
+.footer-col a:hover { color: var(--text); }
+.footer-bottom {
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+  .hero-grid, .contact-grid, .example-layout { grid-template-columns: 1fr; }
+  .services-grid { grid-template-columns: repeat(2, 1fr); }
+  .problem-grid, .benefits-grid { grid-template-columns: repeat(2, 1fr); }
+  .process-timeline { grid-template-columns: repeat(2, 1fr); gap: 40px; }
+  .process-timeline::before { display: none; }
+  .example-detail { position: static; }
+}
+@media (max-width: 768px) {
+  .nav-links, .nav-inner > .nav-cta { display: none; }
+  .menu-toggle { display: flex; }
+  .hero { min-height: auto; padding-top: calc(var(--nav-h) + 32px); }
+  .hero-actions { flex-direction: column; }
+  .hero-actions .btn { width: 100%; }
+  .services-grid, .problem-grid, .benefits-grid { grid-template-columns: 1fr; }
+  .process-timeline { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr; }
+  .footer-links { flex-direction: column; gap: 32px; }
+  .trust-badges { justify-content: flex-start; overflow-x: auto; flex-wrap: nowrap; padding-bottom: 8px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  .reveal { opacity: 1; transform: none; }
+}
+</style>
+</head>
+<body>
+<div class="bg-glow" aria-hidden="true"></div>
+<div class="spotlight" aria-hidden="true"></div>
+<header class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="#home" class="logo"><span class="logo-dot"></span>SIGNAL</a>
+    <ul class="nav-links">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#solutions">Solutions</a></li>
+      <li><a href="#how-it-works">How It Works</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="#contact" class="nav-cta">Automate Your Business</a>
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+<nav class="mobile-menu" id="mobileMenu" aria-hidden="true">
+  <a href="#home">Home</a>
+  <a href="#solutions">Solutions</a>
+  <a href="#how-it-works">How It Works</a>
+  <a href="#services">Services</a>
+  <a href="#contact">Contact</a>
+  <a href="#contact" class="nav-cta">Automate Your Business</a>
+</nav>
+
+<main>
+  <section class="hero" id="home">
+    <div class="container">
+      <div class="hero-grid">
+        <div class="hero-content">
+          <div class="hero-trust reveal">
+            <span>AI Automation</span> • <span>Workflows</span> • <span>Integrations</span>
+          </div>
+          <h1 class="reveal reveal-delay-1">
+            Your business should<br><span class="hero-highlight">run itself.</span>
+          </h1>
+          <p class="hero-sub reveal reveal-delay-2">
+            We build AI-powered automation systems that eliminate repetitive work, connect your tools, and help your business operate faster — without adding headcount.
+          </p>
+          <div class="hero-actions reveal reveal-delay-3">
+            <a href="#contact" class="btn btn-primary">Start Automating</a>
+            <a href="#how-it-works" class="btn btn-ghost">See How It Works</a>
+          </div>
+        </div>
+        <div class="workflow-viz reveal reveal-delay-2" aria-label="Automation workflow visualization">
+          <div class="viz-header">
+            <span class="viz-title">Live workflow</span>
+            <span class="viz-status">Running</span>
+          </div>
+          <div class="viz-flow">
+            <div class="viz-node active">
+              <div class="viz-node-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+              <div class="viz-node-text"><strong>Lead / Customer</strong><span>Form submission or inbound message</span></div>
+            </div>
+            <div class="viz-connector"></div>
+            <div class="viz-node active">
+              <div class="viz-node-icon purple"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a4 4 0 0 1 4 4v1h1a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-8a3 3 0 0 1 3-3h1V6a4 4 0 0 1 4-4z"/></svg></div>
+              <div class="viz-node-text"><strong>AI Agent</strong><span>Classifies intent and extracts data</span></div>
+            </div>
+            <div class="viz-connector"></div>
+            <div class="viz-node">
+              <div class="viz-node-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+              <div class="viz-node-text"><strong>Automation Engine</strong><span>Routes data through your workflow</span></div>
+            </div>
+            <div class="viz-connector"></div>
+            <div class="viz-node">
+              <div class="viz-node-icon blue"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div>
+              <div class="viz-node-text"><strong>CRM / Database</strong><span>Lead stored and tagged automatically</span></div>
+            </div>
+            <div class="viz-connector"></div>
+            <div class="viz-node">
+              <div class="viz-node-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+              <div class="viz-node-text"><strong>Email / WhatsApp / Slack</strong><span>Personalized responses sent instantly</span></div>
+            </div>
+            <div class="viz-connector"></div>
+            <div class="viz-node">
+              <div class="viz-node-icon purple"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+              <div class="viz-node-text"><strong>Business Team</strong><span>Notified only when action is needed</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="trust-strip">
+    <div class="container">
+      <p class="trust-label reveal">Built for modern teams</p>
+      <div class="trust-badges reveal reveal-delay-1">
+        <span class="trust-badge">n8n</span>
+        <span class="trust-badge">OpenAI</span>
+        <span class="trust-badge">Google Sheets</span>
+        <span class="trust-badge">Gmail</span>
+        <span class="trust-badge">Slack</span>
+        <span class="trust-badge">WhatsApp</span>
+        <span class="trust-badge">CRM</span>
+        <span class="trust-badge">Notion</span>
+      </div>
+    </div>
+  </div>
+
+  <section class="section" id="solutions">
+    <div class="container">
+      <p class="section-label reveal">The problem</p>
+      <h2 class="section-title reveal reveal-delay-1">Stop wasting hours on work that software can do.</h2>
+      <p class="section-desc reveal reveal-delay-2">Most teams lose time to processes that should run in the background. That's where we come in.</p>
+      <div class="problem-grid">
+        <article class="problem-card reveal">
+          <div class="problem-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+          <h3>Manual data entry</h3>
+          <p>Copy-pasting between spreadsheets, forms, and CRMs eats hours every week.</p>
+        </article>
+        <article class="problem-card reveal reveal-delay-1">
+          <div class="problem-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+          <h3>Slow lead follow-ups</h3>
+          <p>Leads go cold while your team manually sorts, assigns, and responds.</p>
+        </article>
+        <article class="problem-card reveal reveal-delay-2">
+          <div class="problem-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+          <h3>Repetitive customer support</h3>
+          <p>The same questions answered again and again — day and night.</p>
+        </article>
+        <article class="problem-card reveal reveal-delay-3">
+          <div class="problem-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div>
+          <h3>Scattered business information</h3>
+          <p>Critical data lives across tools with no single source of truth.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="services">
+    <div class="container">
+      <p class="section-label reveal">What we automate</p>
+      <h2 class="section-title reveal reveal-delay-1">Automation systems built for how you actually work.</h2>
+      <p class="section-desc reveal reveal-delay-2">From lead capture to internal alerts — we design workflows that connect your stack and run reliably.</p>
+      <div class="services-grid">
+        <article class="service-card reveal">
+          <div class="service-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg></div>
+          <h3>Lead Capture &amp; CRM Automation</h3>
+          <p>Every submission logged, tagged, and synced — no more copy-pasting into spreadsheets.</p>
+          <span class="service-link">Automate →</span>
+        </article>
+        <article class="service-card reveal reveal-delay-1">
+          <div class="service-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a4 4 0 0 1 4 4v1h1a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-8a3 3 0 0 1 3-3h1V6a4 4 0 0 1 4-4z"/></svg></div>
+          <h3>AI Customer Support</h3>
+          <p>Incoming messages triaged and answered automatically — routed to the right person when needed.</p>
+          <span class="service-link">Automate →</span>
+        </article>
+        <article class="service-card reveal reveal-delay-2">
+          <div class="service-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+          <h3>Email &amp; WhatsApp Automation</h3>
+          <p>Personalized follow-ups and notifications sent at the right moment, every time.</p>
+          <span class="service-link">Automate →</span>
+        </article>
+        <article class="service-card reveal">
+          <div class="service-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
+          <h3>Internal Notifications</h3>
+          <p>Your team gets alerted the moment something needs attention — no dashboards to babysit.</p>
+          <span class="service-link">Automate →</span>
+        </article>
+        <article class="service-card reveal reveal-delay-1">
+          <div class="service-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+          <h3>Data Entry &amp; Reporting</h3>
+          <p>Recurring reports and record-keeping happen on schedule — without anyone opening a spreadsheet.</p>
+          <span class="service-link">Automate →</span>
+        </article>
+        <article class="service-card reveal reveal-delay-2">
+          <div class="service-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+          <h3>AI Agents &amp; Workflow Automation</h3>
+          <p>Custom agents that reason, decide, and act across your business tools — end to end.</p>
+          <span class="service-link">Automate →</span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section process-section" id="how-it-works">
+    <div class="container">
+      <p class="section-label reveal">How it works</p>
+      <h2 class="section-title reveal reveal-delay-1">From discovery to deployment in four steps.</h2>
+      <p class="section-desc reveal reveal-delay-2">A structured process that turns repetitive work into reliable, automated systems.</p>
+      <div class="process-timeline">
+        <div class="process-step reveal">
+          <div class="process-num">01</div>
+          <h3>Discover</h3>
+          <p>We map the repetitive processes slowing your team down.</p>
+        </div>
+        <div class="process-step reveal reveal-delay-1">
+          <div class="process-num">02</div>
+          <h3>Design</h3>
+          <p>We architect the workflow, integrations, and triggers.</p>
+        </div>
+        <div class="process-step reveal reveal-delay-2">
+          <div class="process-num">03</div>
+          <h3>Build</h3>
+          <p>We connect AI, APIs, databases, and your business tools.</p>
+        </div>
+        <div class="process-step reveal reveal-delay-3">
+          <div class="process-num">04</div>
+          <h3>Automate</h3>
+          <p>We deploy, monitor, and continuously improve the system.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="example">
+    <div class="container">
+      <p class="section-label reveal">Real automation</p>
+      <h2 class="section-title reveal reveal-delay-1">New Lead Automation</h2>
+      <p class="section-desc reveal reveal-delay-2">A realistic workflow we build for growing teams — from form submission to sales alert.</p>
+      <div class="example-layout">
+        <div class="example-steps reveal">
+          <button class="example-step active" data-step="0" type="button">
+            <div class="example-step-num">Step 01</div>
+            <div class="example-step-title">Website Form</div>
+          </button>
+          <button class="example-step" data-step="1" type="button">
+            <div class="example-step-num">Step 02</div>
+            <div class="example-step-title">AI analyzes lead</div>
+          </button>
+          <button class="example-step" data-step="2" type="button">
+            <div class="example-step-num">Step 03</div>
+            <div class="example-step-title">Lead stored in CRM</div>
+          </button>
+          <button class="example-step" data-step="3" type="button">
+            <div class="example-step-num">Step 04</div>
+            <div class="example-step-title">Personalized email generated</div>
+          </button>
+          <button class="example-step" data-step="4" type="button">
+            <div class="example-step-num">Step 05</div>
+            <div class="example-step-title">WhatsApp notification sent</div>
+          </button>
+          <button class="example-step" data-step="5" type="button">
+            <div class="example-step-num">Step 06</div>
+            <div class="example-step-title">Sales team alerted</div>
+          </button>
+        </div>
+        <div class="example-detail reveal reveal-delay-1" id="exampleDetail">
+          <div class="example-detail-label">What happens</div>
+          <h3 id="exampleTitle">Website Form</h3>
+          <p id="exampleDesc">A prospect fills out your contact or lead form. The submission triggers your automation instantly — no manual checking required.</p>
+          <div class="example-chain" id="exampleChain">
+            Form → <span class="highlight">Webhook</span> → Automation Engine
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <p class="section-label reveal">Results</p>
+      <h2 class="section-title reveal reveal-delay-1">What automation actually delivers.</h2>
+      <p class="section-desc reveal reveal-delay-2">Real operational improvements — not vanity metrics.</p>
+      <div class="benefits-grid">
+        <article class="benefit-card reveal">
+          <h3>Hours saved</h3>
+          <p>Every week, on tasks your team used to do by hand.</p>
+        </article>
+        <article class="benefit-card reveal reveal-delay-1">
+          <h3>Faster response</h3>
+          <p>Leads and customers hear back in minutes, not hours.</p>
+        </article>
+        <article class="benefit-card reveal reveal-delay-2">
+          <h3>Fewer manual tasks</h3>
+          <p>Data entry, routing, and follow-ups handled automatically.</p>
+        </article>
+        <article class="benefit-card reveal reveal-delay-3">
+          <h3>24/7 workflows</h3>
+          <p>Automations run around the clock — even when you're offline.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section contact-section" id="contact">
+    <div class="container">
+      <p class="section-label reveal">Free consultation</p>
+      <h2 class="section-title reveal reveal-delay-1">Tell us what's slowing your team down.</h2>
+      <p class="section-desc reveal reveal-delay-2">We'll reply within 24 hours with a clear picture of what can be automated.</p>
+      <div class="contact-grid">
+        <div class="contact-copy reveal">
+          <h3>Build your first automation.</h3>
+          <p class="section-desc" style="margin-top:0">Whether you know exactly what you need or just know something has to change — start here.</p>
+          <ul class="contact-points">
+            <li>Free consultation — no commitment</li>
+            <li>Custom workflow design for your stack</li>
+            <li>AI integration where it adds real value</li>
+            <li>Ongoing support and improvements available</li>
+          </ul>
+        </div>
+        <div class="form-card reveal reveal-delay-1">
+          <h2>Get a free consultation</h2>
+          <p class="form-sub">Tell us what's eating your team's time. We'll show you what's possible.</p>
+          <form id="leadForm" novalidate>
+            <div class="field">
+              <label for="name">Full name</label>
+              <input type="text" id="name" name="name" required placeholder="Your name" autocomplete="name">
+              <span class="field-error" id="nameError">Please enter your name.</span>
+            </div>
+            <div class="field">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" required placeholder="you@company.com" autocomplete="email">
+              <span class="field-error" id="emailError">Please enter a valid email.</span>
+            </div>
+            <div class="field">
+              <label for="phone">Phone (optional)</label>
+              <input type="tel" id="phone" name="phone" placeholder="03XX XXXXXXX" autocomplete="tel">
+            </div>
+            <div class="field">
+              <label for="need">What do you want to automate?</label>
+              <select id="need" name="need" required>
+                <option value="" disabled selected>Select one</option>
+                <option value="Lead capture & CRM sync">Lead capture &amp; CRM sync</option>
+                <option value="Customer support bot">Customer support bot</option>
+                <option value="Internal notifications">Internal notifications</option>
+                <option value="Data entry & reporting">Data entry &amp; reporting</option>
+                <option value="Not sure yet — I need urgent advice">Not sure yet — I need urgent advice</option>
+              </select>
+              <span class="field-error" id="needError">Please select an option.</span>
+            </div>
+            <div class="field">
+              <label for="workflow">Tell us more about your workflow (optional)</label>
+              <textarea id="workflow" name="workflow" placeholder="Describe the process you'd like to automate..."></textarea>
+            </div>
+            <button type="submit" class="submit-btn" id="submitBtn">Build My Automation</button>
+            <p class="form-note">No spam. One reply, then it's your call.</p>
+            <div class="status-msg" id="statusMsg" role="status" aria-live="polite"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="faq">
+    <div class="container">
+      <p class="section-label reveal">FAQ</p>
+      <h2 class="section-title reveal reveal-delay-1">Common questions.</h2>
+      <div class="faq-list reveal reveal-delay-2">
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">What kind of processes can you automate?<span class="faq-icon"></span></button>
+          <div class="faq-answer"><div class="faq-answer-inner">Anything repetitive: lead capture, customer support routing, data entry, reporting, internal alerts, email and WhatsApp follow-ups, CRM sync, and more. If your team does it more than once a week, it can likely be automated.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">Do you work with existing tools?<span class="faq-icon"></span></button>
+          <div class="faq-answer"><div class="faq-answer-inner">Yes. We integrate with the tools you already use — CRMs, Google Sheets, Gmail, Slack, WhatsApp, Notion, and hundreds of others via n8n and direct API connections.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">Can you integrate AI into our workflow?<span class="faq-icon"></span></button>
+          <div class="faq-answer"><div class="faq-answer-inner">Absolutely. We use AI where it adds real value — classifying leads, drafting personalized responses, extracting data from messages, and powering intelligent routing decisions.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">Do I need technical knowledge?<span class="faq-icon"></span></button>
+          <div class="faq-answer"><div class="faq-answer-inner">Not at all. You describe the problem; we design, build, and deploy the solution. We handle all the technical work and explain everything in plain language.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">How long does an automation take?<span class="faq-icon"></span></button>
+          <div class="faq-answer"><div class="faq-answer-inner">Simple workflows can go live within days. More complex multi-system automations typically take one to three weeks, depending on integrations and scope.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">Can you maintain and improve the automation?<span class="faq-icon"></span></button>
+          <div class="faq-answer"><div class="faq-answer-inner">Yes. We offer ongoing monitoring, maintenance, and improvements as your business evolves. Automations aren't set-and-forget — we keep them running and optimize over time.</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="final-cta">
+    <div class="container">
+      <h2 class="reveal">Ready to stop doing repetitive work?</h2>
+      <p class="reveal reveal-delay-1">Tell us what is slowing your team down. We'll show you what can be automated.</p>
+      <a href="#contact" class="btn btn-primary reveal reveal-delay-2">Start Your Automation</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#home" class="logo"><span class="logo-dot"></span>SIGNAL</a>
+        <p>AI automation for modern businesses.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>Navigate</h4>
+          <a href="#solutions">Solutions</a>
+          <a href="#services">Services</a>
+          <a href="#how-it-works">How It Works</a>
+          <a href="#contact">Contact</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Signal. All rights reserved.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+const WEBHOOK_URL = "https://hesitancy-knapsack-chug.ngrok-free.dev/webhook/agency-lead";
+
+    /* --- Navbar --- */
+  const navbar = document.getElementById('navbar');
+  const menuToggle = document.getElementById('menuToggle');
+  const mobileMenu = document.getElementById('mobileMenu');
+
+  function closeMobileMenu() {
+    menuToggle.classList.remove('active');
+    mobileMenu.classList.remove('open');
+    menuToggle.setAttribute('aria-expanded', 'false');
+    mobileMenu.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('menu-open');
+  }
+
+  window.addEventListener('scroll', function () {
+    navbar.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
+
+  menuToggle.addEventListener('click', function () {
+    const open = !mobileMenu.classList.contains('open');
+    menuToggle.classList.toggle('active', open);
+    mobileMenu.classList.toggle('open', open);
+    menuToggle.setAttribute('aria-expanded', String(open));
+    mobileMenu.setAttribute('aria-hidden', String(!open));
+    document.body.classList.toggle('menu-open', open);
+  });
+
+  mobileMenu.querySelectorAll('a').forEach(function (link) {
+    link.addEventListener('click', closeMobileMenu);
+  });
+
+  /* --- Spotlight --- */
+  const spotlight = document.querySelector('.spotlight');
+  if (spotlight && window.matchMedia('(pointer: fine)').matches) {
+    document.addEventListener('mousemove', function (e) {
+      spotlight.style.setProperty('--mx', e.clientX + 'px');
+      spotlight.style.setProperty('--my', e.clientY + 'px');
+    }, { passive: true });
+  }
+
+  /* --- Scroll reveal --- */
+  const revealEls = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    revealEls.forEach(function (el) { observer.observe(el); });
+  } else {
+    revealEls.forEach(function (el) { el.classList.add('visible'); });
+  }
+
+  /* --- Workflow viz node cycling --- */
+  const vizNodes = document.querySelectorAll('.viz-node');
+  let vizIndex = 0;
+  setInterval(function () {
+    vizNodes.forEach(function (n) { n.classList.remove('active'); });
+    vizNodes[vizIndex % vizNodes.length].classList.add('active');
+    vizIndex++;
+  }, 2400);
+
+  /* --- Example workflow --- */
+  const exampleData = [
+    { title: 'Website Form', desc: 'A prospect fills out your contact or lead form. The submission triggers your automation instantly — no manual checking required.', chain: 'Form → <span class="highlight">Webhook</span> → Automation Engine' },
+    { title: 'AI analyzes lead', desc: 'An AI agent reads the submission, extracts key details, scores intent, and determines the best next action.', chain: 'Submission → <span class="highlight">AI Agent</span> → Structured data' },
+    { title: 'Lead stored in CRM', desc: 'The lead is automatically created in your CRM with the right tags, owner, and pipeline stage — zero copy-paste.', chain: 'Data → <span class="highlight">CRM API</span> → New contact record' },
+    { title: 'Personalized email generated', desc: 'AI drafts a tailored response based on the lead\'s needs and sends it within seconds of submission.', chain: 'Lead data → <span class="highlight">AI draft</span> → Gmail sent' },
+    { title: 'WhatsApp notification sent', desc: 'Your sales team receives an instant WhatsApp alert with lead summary and a direct link to the CRM record.', chain: 'CRM record → <span class="highlight">WhatsApp API</span> → Team notified' },
+    { title: 'Sales team alerted', desc: 'The right rep is assigned and notified via Slack or email — with full context, ready to follow up.', chain: 'Assignment → <span class="highlight">Slack / Email</span> → Rep action' }
+  ];
+
+  const exampleSteps = document.querySelectorAll('.example-step');
+  const exampleTitle = document.getElementById('exampleTitle');
+  const exampleDesc = document.getElementById('exampleDesc');
+  const exampleChain = document.getElementById('exampleChain');
+
+  exampleSteps.forEach(function (step) {
+    step.addEventListener('click', function () {
+      const idx = parseInt(step.dataset.step, 10);
+      exampleSteps.forEach(function (s) { s.classList.remove('active'); });
+      step.classList.add('active');
+      const data = exampleData[idx];
+      exampleTitle.textContent = data.title;
+      exampleDesc.textContent = data.desc;
+      exampleChain.innerHTML = data.chain;
+    });
+  });
+
+  /* --- FAQ accordion --- */
+  document.querySelectorAll('.faq-item').forEach(function (item) {
+    const btn = item.querySelector('.faq-question');
+    const answer = item.querySelector('.faq-answer');
+    btn.addEventListener('click', function () {
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(function (openItem) {
+        openItem.classList.remove('open');
+        openItem.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
+        openItem.querySelector('.faq-answer').style.maxHeight = '0';
+      });
+      if (!isOpen) {
+        item.classList.add('open');
+        btn.setAttribute('aria-expanded', 'true');
+        answer.style.maxHeight = answer.scrollHeight + 'px';
+      }
+    });
+  });
+
+  /* --- Form --- */
+  const form = document.getElementById('leadForm');
+  const btn = document.getElementById('submitBtn');
+  const statusMsg = document.getElementById('statusMsg');
+  let isSubmitting = false;
+
+  function validateForm() {
+    let valid = true;
+    const name = document.getElementById('name');
+    const email = document.getElementById('email');
+    const need = document.getElementById('need');
+    const nameError = document.getElementById('nameError');
+    const emailError = document.getElementById('emailError');
+    const needError = document.getElementById('needError');
+
+    [name, email, need].forEach(function (el) { el.classList.remove('invalid'); });
+    [nameError, emailError, needError].forEach(function (el) { el.classList.remove('show'); });
+
+    if (!name.value.trim()) {
+      name.classList.add('invalid');
+      nameError.classList.add('show');
+      valid = false;
+    }
+    const emailVal = email.value.trim();
+    if (!emailVal || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) {
+      email.classList.add('invalid');
+      emailError.classList.add('show');
+      valid = false;
+    }
+    if (!need.value) {
+      need.classList.add('invalid');
+      needError.classList.add('show');
+      valid = false;
+    }
+    return valid;
+  }
+
+  function setLoading(loading) {
+    btn.disabled = loading;
+    btn.classList.toggle('loading', loading);
+    btn.textContent = loading ? 'Sending...' : 'Build My Automation';
+  }
+
+  function showStatus(type, message) {
+    statusMsg.className = 'status-msg ' + type;
+    if (type === 'success') {
+      statusMsg.innerHTML = '<span class="success-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span>' + message + '</span>';
+    } else {
+      statusMsg.textContent = message;
+    }
+  }
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    if (isSubmitting) return;
+    if (!validateForm()) return;
+
+    isSubmitting = true;
+    statusMsg.className = 'status-msg';
+    statusMsg.textContent = '';
+    setLoading(true);
+
+    const payload = {
+      name: document.getElementById('name').value.trim(),
+      email: document.getElementById('email').value.trim(),
+      phone: document.getElementById('phone').value.trim(),
+      automation_need: document.getElementById('need').value
+    };
+
+    const workflowNotes = document.getElementById('workflow').value.trim();
+    if (workflowNotes) payload.workflow_notes = workflowNotes;
+
+    try {
+      const res = await fetch(WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      if (res.ok) {
+        showStatus('success', 'Request received. Check your inbox for confirmation.');
+        form.reset();
+      } else {
+        showStatus('error', '✕ Something went wrong. Please check your details and try again.');
+      }
+    } catch (err) {
+      showStatus('error', '✕ Could not reach the server. Please try again.');
+    }
+
+    setLoading(false);
+    isSubmitting = false;
+  });
+})();
+</script>
+</body>
+</html>
